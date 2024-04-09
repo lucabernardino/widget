@@ -13,7 +13,7 @@
                 </div>
                 <div class="ml-3 w-0 flex-1 pt-0.5">
                   <p class="text-sm font-medium text-gray-900">Good news </p>
-                  <p class="mt-1 text-sm text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit oluptatum tenetur.</p>
+                  <p class="mt-1 text-sm text-gray-500">{{ data.notification }}</p>
                   <div class="mt-3 flex space-x-7">
                     <button type="button" class="rounded bg-green-50 px-2 py-1 text-xs font-semibold text-green-600 shadow-sm hover:bg-green-100">
                       It's working
@@ -33,4 +33,8 @@
   import { ref } from 'vue'
   
   const show = ref(true)
+
+  defineProps({
+    data : Object
+  })
   </script>
