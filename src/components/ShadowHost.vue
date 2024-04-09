@@ -20,7 +20,7 @@ const postData = async () => {
     const response = await axios.post('http://local.dawnvox.com:8000/api/fetch-notification', 
       {
         // Your data payload here
-        user_id: 5,
+        user_id: 4,
       },
       {
         headers: {
