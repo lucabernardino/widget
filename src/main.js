@@ -13,8 +13,8 @@ function initVueApp(apiKey) {
 }
 
 // Check if the config object exists and initialize the app
-if (window.dawnVoxConfig && window.dawnVoxConfig.apiKey) {
-  initVueApp(window.dawnVoxConfig.apiKey);
+if (window.DawnVox && window.DawnVox.apiKey) {
+  initVueApp(window.DawnVox.apiKey);
 } else {
   // Initialize with default config if not provided
   console.error('Dawnvox api key missing')
