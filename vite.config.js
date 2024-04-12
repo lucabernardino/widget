@@ -13,12 +13,12 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  // build: {
-  //   // generate .vite/manifest.json in outDir
-  //   manifest: true,
-  //   rollupOptions: {
-  //     // overwrite default .html entry
-  //     input: './src/main.js',
-  //   },
-  // }
+  build: {
+    // generate .vite/manifest.json in outDir
+    manifest: true,
+    rollupOptions: {
+      // overwrite default .html entry
+      input: './src/main.js',
+    },
+  }
 })
