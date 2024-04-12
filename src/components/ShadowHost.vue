@@ -7,13 +7,17 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, getCurrentInstance } from 'vue';
 import axios from 'axios'; // Assuming you're using Axios for HTTP requests
 import NotificationWidget from './NotificationWidget.vue';
 import FeedbackWidget from './FeedbackWidget.vue';
 
 // Reactive reference to hold the notification data
 const notificationData = ref(null);
+
+// Accessing the global properties safely
+const instance = getCurrentInstance();
+const apiKey = instance?.appContext.config.globalProperties.$config.apiKey;
 
 const postData = async () => {
   try {
@@ -24,7 +28,7 @@ const postData = async () => {
       },
       {
         headers: {
-          'Authorization': 'Bearer 1YEQd7jramJQJKDYS6015rpc1O1xJhXiwueH9bKm50426279',
+          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
       }
@@ -39,7 +43,7 @@ const postData = async () => {
 };
 
 onMounted(() => {
-  // postData();
+  postData();
 });
 
 </script>
