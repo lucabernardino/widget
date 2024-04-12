@@ -12,14 +12,14 @@
     const assets = [];
     Object.keys(manifest).forEach(key => {
       const entry = manifest[key];
-      if (entry.css) {
-        entry.css.forEach(css => {
-          const link = document.createElement('link');
-          link.href = `${baseUrl}${css}`;
-          link.rel = 'stylesheet';
-          document.head.appendChild(link);
-        });
-      }
+      // if (entry.css) {
+      //   entry.css.forEach(css => {
+      //     const link = document.createElement('link');
+      //     link.href = `${baseUrl}${css}`;
+      //     link.rel = 'stylesheet';
+      //     document.head.appendChild(link);
+      //   });
+      // }
       if (entry.file) {
         const promise = new Promise((resolve) => {
           const script = document.createElement('script');
