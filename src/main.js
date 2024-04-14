@@ -1,12 +1,15 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import './index.css';
+import helpers from '@/helpers';
 
 function initVueApp(apiKey) {
   const app = createApp(App);
 
   // Pass configuration settings as a global property
   app.config.globalProperties.$config = { apiKey: apiKey };
+
+  app.config.globalProperties.$helpers = helpers;
 
   app.mount('#dawn_vox_app');
 
