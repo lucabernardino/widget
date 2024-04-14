@@ -43,7 +43,7 @@ const postData = async () => {
 };
 
 onMounted(() => {
-  postData();
+  // postData();
 });
 
 </script>
