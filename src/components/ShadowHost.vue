@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- Conditionally render NotificationWidget if there is data -->
     <NotificationWidget v-if="notificationData" :data="notificationData" />
     <FeedbackWidget />
   </div>
@@ -8,23 +7,28 @@
 
 <script setup>
 import { onMounted, ref, getCurrentInstance } from 'vue';
-import axios from 'axios'; // Assuming you're using Axios for HTTP requests
+import axios from 'axios';
 import NotificationWidget from './NotificationWidget.vue';
 import FeedbackWidget from './FeedbackWidget.vue';
+
+defineProps({
+  instance : Object
+})
 
 // Reactive reference to hold the notification data
 const notificationData = ref(null);
 
-// Accessing the global properties safely
+// Accessing the global properties safely using getCurrentInstance
 const instance = getCurrentInstance();
-const apiKey = instance?.appContext.config.globalProperties.$config.apiKey;
+const globalProperties = instance?.appContext.config.globalProperties;
+const apiKey = globalProperties?.$config?.apiKey;
 
 const postData = async () => {
   try {
-    const response = await axios.post('http://local.dawnvox.com:8000/api/fetch-notification', 
+    const response = await axios.post('http://local.dawnvox.com:8000/api/user', 
       {
-        // Your data payload here
-        user_id: 4,
+        project_id: apiKey,
+        customer : instance?.appContext.config.globalProperties.$helpers.unique_id()
       },
       {
         headers: {
@@ -33,17 +37,20 @@ const postData = async () => {
         },
       }
     );
-    if (response.data.notification) {
-      notificationData.value = response.data.notification;
+    console.log(response)
+    if (response.data && response.data.notifications) {
+      console.log('hi')
+      notificationData.value = response.data.notifications;  // Update using .value for reactivity
+      console.log('Notification Data:', notificationData.value);
+      console.log('Authenticated!');
     }
   } catch (error) {
-    console.error("Failed to fetch notification data:", error);
-    // Handle error appropriately
+    console.error("Failed to connect to Dawnvox:", error);
   }
 };
 
 onMounted(() => {
-  // postData();
+  postData();
 });
 
 </script>
