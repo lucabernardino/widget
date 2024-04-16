@@ -1,6 +1,6 @@
 <template>
   <div id="dawn_vox_app">
-    <ShadowHost :instance="instance" />
+    <ShadowHost :instance="instance" :customer="customer" />
   </div>
 </template>
 
@@ -9,7 +9,6 @@ import { onMounted, ref, getCurrentInstance } from 'vue';
 
 
 const instance = getCurrentInstance();
-
-// console.log(instance?.appContext.config.globalProperties.$helpers.unique_id())
+const customer = 4543
 import ShadowHost from './components/ShadowHost.vue';
 </script>

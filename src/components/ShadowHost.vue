@@ -11,8 +11,9 @@ import axios from 'axios';
 import NotificationWidget from './NotificationWidget.vue';
 import FeedbackWidget from './FeedbackWidget.vue';
 
-defineProps({
-  instance : Object
+const props = defineProps({
+  instance : Object,
+  customer : Object
 })
 
 // Reactive reference to hold the notification data
@@ -28,7 +29,7 @@ const postData = async () => {
     const response = await axios.post('http://local.dawnvox.com:8000/api/user', 
       {
         project_id: apiKey,
-        customer : instance?.appContext.config.globalProperties.$helpers.unique_id()
+        customer : props.customer
       },
       {
         headers: {

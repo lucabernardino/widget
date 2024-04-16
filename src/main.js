@@ -15,32 +15,32 @@ function initVueApp(apiKey) {
 
   // Expose the event method globally
   window.DawnVox = {
-    set_event(eventName) {
-      // API URL where events are logged
-      const apiUrl = 'https://yourapi.com/events';
+    // set_event(eventName) {
+    //   // API URL where events are logged
+    //   const apiUrl = 'https://yourapi.com/events';
 
-      // Make an API call to log the event
-      fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({ eventName })
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Event logged:', data);
-      })
-      .catch(error => {
-        console.error('Error logging event:', error);
-      });
-    }
+    //   // Make an API call to log the event
+    //   fetch(apiUrl, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Authorization': `Bearer ${apiKey}`
+    //     },
+    //     body: JSON.stringify({ eventName })
+    //   })
+    //   .then(response => {
+    //     if (!response.ok) {
+    //       throw new Error('Network response was not ok');
+    //     }
+    //     return response.json();
+    //   })
+    //   .then(data => {
+    //     console.log('Event logged:', data);
+    //   })
+    //   .catch(error => {
+    //     console.error('Error logging event:', error);
+    //   });
+    // }
   };
 }
 
