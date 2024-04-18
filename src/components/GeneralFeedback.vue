@@ -1,58 +1,69 @@
-<!--
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
--->
 <template>
-  <form action="#" class="relative">
-        <!-- Cross Icon button -->
-        <div class="absolute top-0 right-0 pt-4 pr-4">
-      <button type="button" @click="$emit('close')" class="text-gray-400 hover:text-gray-500">
-        <XMarkIcon class="h-6 w-6" aria-hidden="true" />
-      </button>
-    </div>
-    <div class="p-3 overflow-hidden rounded-lg border border-gray-300 rounded-lg bg-white shadow-lg focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
-      General feedback
+<div class="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
+  <div class="px-4 py-5 sm:p-6">
+    <p class="font-semibold text-sm text-indigo-500">Tell us how you feel</p>
+    <h3 class="font-semibold text-lg">This is the question i am asking?</h3>
+    <form action="#" class="relative mt-4">
       <label for="description" class="sr-only">Description</label>
-      <textarea rows="5" name="description" id="description" class="block w-full resize-none border-0 py-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="Tell us how you feel about the product..." />
-
-      <!-- Spacer element to match the height of the toolbar -->
-      <div aria-hidden="true">
-        <div class="py-2">
-          <div class="h-9" />
-        </div>
-        <div class="h-px" />
-        <!-- <div class="py-2">
-          <div class="py-px">
-            <div class="h-9" />
-          </div>
-        </div> -->
-      </div>
-    </div>
-
-    <div class="absolute inset-x-px bottom-0">
-      <div class="flex flex-nowrap justify-end space-x-2 px-2 py-2 sm:px-3">
-
-      </div>
-      
-      <div class="flex items-center justify-between space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
-        <div class="flex-shrink-0">
-          <button type="submit" class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Submit</button>
-        </div>
-      </div>
-    </div>
-  </form>
+      <textarea :class="textareaClass" v-model="textareaContent" rows="5" name="description" id="description" class="border border-gray-300 rounded-lg p-4 block w-full resize-none text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" :placeholder="textareaPlaceholder" />
+    </form>
+  </div>
+  <div class="flex justify-end px-4 py-4 sm:px-6">
+    <button @click="submitForm" v-if="!isLoading" type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Share feedback</button>
+    <button @click="submitForm" v-if="isLoading" type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+        <span class="flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="animate-spin w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+        </svg>
+        Share feedback
+      </span>
+    </button>
+  </div>
+</div>
 </template>
 
-<script setup>
-import { XMarkIcon } from '@heroicons/vue/20/solid';
+<script>
+export default {
+  data() {
+    return {
+      textareaContent: '',
+      isLoading: false,
+      textareaClass: 'border-gray-300',
+      textareaPlaceholder: 'Share your thoughts'
+    };
+  },
+  methods: {
+    submitForm() {
+      if (!this.textareaContent) {
+        this.textareaClass = 'border-red-500'; // Change border color to red
+        this.textareaPlaceholder = 'Please enter some feedback'; 
+        return;
+      }
+      this.isLoading = true; // Start loading
+      this.makeApiRequest();
+    },
+    async makeApiRequest() {
+      try {
+        const response = await fetch('http://local.dawnvox.com:8000/api/feedback', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ content: this.textareaContent })
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+        const data = await response.json();
+        console.log(data); // Handle your response here
+        alert('Submission successful!');
+      } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        alert('Error submitting form.');
+      } finally {
+        this.isLoading = false; // Stop loading regardless of success or failure
+      }
+    }
+  }
+}
 </script>

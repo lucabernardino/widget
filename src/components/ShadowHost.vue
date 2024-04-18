@@ -22,18 +22,18 @@ const notificationData = ref(null);
 // Accessing the global properties safely using getCurrentInstance
 const instance = getCurrentInstance();
 const globalProperties = instance?.appContext.config.globalProperties;
-const apiKey = globalProperties?.$config?.apiKey;
+const project_id = globalProperties?.$config?.project_id;
 
 const postData = async () => {
   try {
     const response = await axios.post('http://local.dawnvox.com:8000/api/user', 
       {
-        project_id: apiKey,
+        project_id: project_id,
         customer : props.customer
       },
       {
         headers: {
-          'Authorization': `Bearer ${apiKey}`,
+          'Authorization': `Bearer ${project_id}`,
           'Content-Type': 'application/json',
         },
       }

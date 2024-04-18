@@ -40,12 +40,12 @@
         createMountPoint();
         return loadAssets(manifest);
       })
-      // .then(() => {
-      //   if (window.dawnVoxConfig) {
-      //     // Pass the configuration to your Vue app
-      //     initVueApp(window.dawnVoxConfig);  // Assuming `initVueApp` is your app initialization function
-      //   }
-      // })
+      .then(() => {
+        if (window.Dawnvox) {
+          // Pass the configuration to your Vue app
+          initVueApp(window.Dawnvox);  // Assuming `initVueApp` is your app initialization function
+        }
+      })
       .catch(error => {
         console.error('Error loading the Vue app:', error);
       });

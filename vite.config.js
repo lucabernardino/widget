@@ -14,6 +14,7 @@ export default defineConfig({
     }
   },
   build: {
+    manifest: true,
     rollupOptions: {
       input: {
         main: 'src/main.js',  // Main application entry with cache buster

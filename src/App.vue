@@ -9,6 +9,7 @@ import { onMounted, ref, getCurrentInstance } from 'vue';
 
 
 const instance = getCurrentInstance();
-const customer = 4543
+const customer = helpers.unique_id()
 import ShadowHost from './components/ShadowHost.vue';
+import helpers from '@/helpers';
 </script>

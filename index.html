@@ -5,14 +5,18 @@
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dawnvox</title>
+    <script type="module" src="/src/main.js"></script>
   </head>
+
+
   <body>
     <div id="dawn_vox_app"></div>
-    <script type="module" src="/src/main.js"></script>
-    <script>
-      window.DawnVox = {
-        apiKey: '461d2310aad7e59bc41e27c0ccaf4c86876cccc6'
-      };
-    </script>
   </body>
+  <script>
+    (function() {
+      window.Dawnvox = {
+        project_id: "ddd0e4688f4b315de4f1418f0584b18f5f29f409"
+      };
+    })();
+  </script> 
 </html>

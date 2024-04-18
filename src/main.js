@@ -3,11 +3,11 @@ import App from './App.vue';
 import './index.css';
 import helpers from '@/helpers';
 
-function initVueApp(apiKey) {
+function initVueApp(project_id) {
   const app = createApp(App);
 
   // Pass configuration settings as a global property
-  app.config.globalProperties.$config = { apiKey: apiKey };
+  app.config.globalProperties.$config = { project_id: project_id };
 
   app.config.globalProperties.$helpers = helpers;
 
@@ -45,8 +45,8 @@ function initVueApp(apiKey) {
 }
 
 // Check if the config object exists and initialize the app
-if (window.DawnVox && window.DawnVox.apiKey) {
-  initVueApp(window.DawnVox.apiKey);
+if (window.Dawnvox && window.Dawnvox.project_id) {
+  initVueApp(window.Dawnvox.project_id);
 } else {
-  console.error('Dawnvox api key missing');
+  console.error('Dawnvox project key missing');
 }
