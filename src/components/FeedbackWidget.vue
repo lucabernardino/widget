@@ -9,13 +9,17 @@ const showFeedback = ref(false);
 const toggleFeedback = () => {
   showFeedback.value = !showFeedback.value;
 };
+
+const props = defineProps({
+  app : String
+})
 </script>
 
 <template>
   <div class="pointer-events-none fixed inset-x-0 bottom-0 px-6 pb-6">
       <div class="pointer-events-auto ml-auto max-w-xl">
             <ButtonWidget v-if="!showFeedback" @click="toggleFeedback" />
-            <GeneralFeedback v-if="showFeedback" @close="toggleFeedback" />
+            <GeneralFeedback v-if="showFeedback" @close="toggleFeedback" :app="app" />
       </div>
   </div>
 </template>

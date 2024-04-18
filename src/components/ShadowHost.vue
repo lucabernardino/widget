@@ -1,7 +1,7 @@
 <template>
   <div>
     <NotificationWidget v-if="notificationData" :data="notificationData" />
-    <FeedbackWidget />
+    <FeedbackWidget :app="app_key" />
   </div>
 </template>
 
@@ -18,6 +18,7 @@ const props = defineProps({
 
 // Reactive reference to hold the notification data
 const notificationData = ref(null);
+const app_key = ref(null);
 
 // Accessing the global properties safely using getCurrentInstance
 const instance = getCurrentInstance();
@@ -33,17 +34,13 @@ const postData = async () => {
       },
       {
         headers: {
-          'Authorization': `Bearer ${project_id}`,
           'Content-Type': 'application/json',
         },
       }
     );
-    console.log(response)
-    if (response.data && response.data.notifications) {
-      console.log('hi')
-      notificationData.value = response.data.notifications;  // Update using .value for reactivity
-      console.log('Notification Data:', notificationData.value);
-      console.log('Authenticated!');
+    if (response.data) {
+      notificationData.value = response.data.notifications;
+      app_key.value = response.data.app
     }
   } catch (error) {
     console.error("Failed to connect to Dawnvox:", error);

@@ -24,6 +24,9 @@
 
 <script>
 export default {
+  props: {
+    app: String  // Define 'name' as a prop
+  },
   data() {
     return {
       textareaContent: '',
@@ -47,7 +50,9 @@ export default {
         const response = await fetch('http://local.dawnvox.com:8000/api/feedback', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization' : `Bearer ${this.app}`
           },
           body: JSON.stringify({ content: this.textareaContent })
         });
