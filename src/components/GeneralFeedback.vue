@@ -25,7 +25,8 @@
 <script>
 export default {
   props: {
-    app: String  // Define 'name' as a prop
+    app: String,  // Define 'name' as a prop
+    project_id: String,  // Define 'name' as a prop
   },
   data() {
     return {
@@ -54,7 +55,10 @@ export default {
             'Accept': 'application/json',
             'Authorization' : `Bearer ${this.app}`
           },
-          body: JSON.stringify({ content: this.textareaContent })
+          body: JSON.stringify({ 
+              content: this.textareaContent,
+              project_id: this.project_id,
+            })
         });
         if (!response.ok) {
           throw new Error('Network response was not ok.');

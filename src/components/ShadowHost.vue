@@ -1,7 +1,7 @@
 <template>
   <div>
     <NotificationWidget v-if="notificationData" :data="notificationData" />
-    <FeedbackWidget :app="app_key" />
+    <FeedbackWidget :app="app_key" :project_id="project_id" />
   </div>
 </template>
 
