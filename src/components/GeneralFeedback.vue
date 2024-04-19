@@ -23,10 +23,13 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   props: {
     app: String,  // Define 'name' as a prop
     project_id: String,  // Define 'name' as a prop
+    customer: String,  // Define 'name' as a prop
+    survey: String,  // Define 'name' as a prop
   },
   data() {
     return {
@@ -48,27 +51,29 @@ export default {
     },
     async makeApiRequest() {
       try {
-        const response = await fetch('http://local.dawnvox.com:8000/api/feedback', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization' : `Bearer ${this.app}`
+        const response = await axios.post('http://local.dawnvox.com:8000/api/feedback',
+          {
+            project_id: this.project_id,
+            survey_id : this.survey.id,
+            customer_id : this.customer,
+            content : this.textareaContent
           },
-          body: JSON.stringify({ 
-              content: this.textareaContent,
-              project_id: this.project_id,
-            })
-        });
-        if (!response.ok) {
+          {
+            headers : {
+              'Content-Type': 'application/json',
+              // 'Accept': '*/*',
+              // 'Authorization' : `Bearer ${this.app}`
+            }
+          }
+        );
+
+        if (response.status != 200) {
           throw new Error('Network response was not ok.');
         }
-        const data = await response.json();
-        console.log(data); // Handle your response here
-        alert('Submission successful!');
+        const data = await response;
+
       } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-        alert('Error submitting form.');
+
       } finally {
         this.isLoading = false; // Stop loading regardless of success or failure
       }

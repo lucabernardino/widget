@@ -1,7 +1,12 @@
 <template>
   <div>
     <NotificationWidget v-if="notificationData" :data="notificationData" />
-    <FeedbackWidget :app="app_key" :project_id="project_id" />
+    <FeedbackWidget 
+      :customer="customer" 
+      :app="app_key" 
+      :project_id="project_id"
+      :survey="survey"
+    />
   </div>
 </template>
 
@@ -10,6 +15,7 @@ import { onMounted, ref, getCurrentInstance } from 'vue';
 import axios from 'axios';
 import NotificationWidget from './NotificationWidget.vue';
 import FeedbackWidget from './FeedbackWidget.vue';
+import { data } from 'autoprefixer';
 
 const props = defineProps({
   instance : Object,
@@ -19,6 +25,7 @@ const props = defineProps({
 // Reactive reference to hold the notification data
 const notificationData = ref(null);
 const app_key = ref(null);
+const survey = ref(null);
 
 // Accessing the global properties safely using getCurrentInstance
 const instance = getCurrentInstance();
@@ -41,6 +48,14 @@ const postData = async () => {
     if (response.data) {
       notificationData.value = response.data.notifications;
       app_key.value = response.data.app
+
+
+      if (response.data.survey.length == 0) {
+        survey.value = response.data.default_survey
+      }
+      else {
+        survey.value = response.data.survey
+      }
     }
   } catch (error) {
     console.error("Failed to connect to Dawnvox:", error);
