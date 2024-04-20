@@ -1,91 +1,44 @@
-<script>
-import axios from 'axios';
+<script setup>
 import UserNotification from '../UserNotification.vue';
-export default {
-  props: {
-    app: String,  // Define 'name' as a prop
-    project_id: String,  // Define 'name' as a prop
-    customer: String,  // Define 'name' as a prop
-    survey: Object,  // Define 'name' as a prop
-  },
-  components: {
-    UserNotification // Register the component
-  },
-  data() {
-    return {
-      textareaContent: '',
-      isLoading: false,
-      success: false,
-      show_container: true,
-      title: 'Feedback received',
-      description: 'We really appreciate it',
-      textareaClass: 'border-gray-300',
-      textareaPlaceholder: 'Share your thoughts'
-    };
-  },
-  methods: {
-    submitForm() {
-      if (!this.textareaContent) {
-        this.textareaClass = 'border-red-500'; // Change border color to red
-        this.textareaPlaceholder = 'Please enter some feedback'; 
-        return;
-      }
-      this.isLoading = true; // Start loading
-      this.makeApiRequest();
-    },
-    async makeApiRequest() {
-      try {
-        const response = await axios.post('http://local.dawnvox.com:8000/api/feedback',
-          {
-            project_id: this.project_id,
-            survey_id : this.survey.id,
-            customer_id : this.customer,
-            content : this.textareaContent
-          },
-          {
-            headers : {
-              'Content-Type': 'application/json',
-            }
-          }
-        );
+import { ref } from 'vue'
+import { RadioGroup, RadioGroupDescription, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue'
 
-        if (response.status != 200) {
-          throw new Error('Network response was not ok.');
-        }
-        {
-          this.success = true
-          this.show_container = false
-        }
 
-      } catch (error) {
+const props = defineProps({
+  app: String,  // Define 'name' as a prop
+  project_id: String,  // Define 'name' as a prop
+  customer: String,  // Define 'name' as a prop
+  survey: Object,  // Define 'name' as a prop
+})
 
-      } finally {
-        this.isLoading = false;
-      }
-    }
-  }
-}
+const settings = props.survey.poll_statements
+
+const selected = ref(settings[0])
+
 </script>
 <template>
 <UserNotification v-if="this.success" :title="this.title" :description="this.description" />
-<div v-if="this.show_container" class="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
+<div class="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
   <div class="px-4 py-5 sm:p-6">
     <p class="font-semibold text-sm text-indigo-500">Tell us how you feel</p>
     <h3 class="font-semibold text-lg">{{ survey.statement }}</h3>
     <form action="#" class="relative mt-4">
-      <fieldset>
-        <div class="divide-y divide-gray-200 border-b border-t border-gray-200">
-          <div v-for="statement in survey.poll_statements" :key="statement" class="relative flex items-start py-4 hover:bg-gray-50 cursor-pointer">
-            <!-- Label now wraps the entire row content, making all of it clickable -->
-            <label :for="`side-${statement}`" class="flex justify-between w-full text-sm leading-6 select-none">
-              <span class="font-medium text-gray-900">{{ statement }}</span>
-              <!-- Radio button is now inside the label -->
-              <input :id="`side-${statement}`" name="poll" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
-            </label>
-          </div>
+      <RadioGroup v-model="selected">
+    <RadioGroupLabel class="sr-only">Privacy setting</RadioGroupLabel>
+    <div class="-space-y-px rounded-md bg-white">
+      <RadioGroupOption as="template" v-for="(setting, settingIdx) in settings" :key="setting.name" :value="setting" v-slot="{ checked, active }">
+        <div :class="[settingIdx === 0 ? 'rounded-tl-md rounded-tr-md' : '', settingIdx === settings.length - 1 ? 'rounded-bl-md rounded-br-md' : '', checked ? 'z-10 border-indigo-200 bg-indigo-50' : 'border-gray-200', 'relative flex cursor-pointer border p-4 focus:outline-none']">
+          <span :class="[checked ? 'bg-indigo-600 border-transparent' : 'bg-white border-gray-300', active ? 'ring-2 ring-offset-2 ring-indigo-600' : '', 'mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded-full border flex items-center justify-center']" aria-hidden="true">
+            <span class="rounded-full bg-white w-1.5 h-1.5" />
+          </span>
+          <span class="ml-3 flex flex-col">
+            <RadioGroupLabel as="span" :class="[checked ? 'text-indigo-900' : 'text-gray-900', 'block text-sm font-medium']">{{ setting }}</RadioGroupLabel>
+            <!-- <RadioGroupDescription as="span" :class="[checked ? 'text-indigo-700' : 'text-gray-500', 'block text-sm']">{{ setting.description }}</RadioGroupDescription> -->
+          </span>
         </div>
-      </fieldset>
-
+      </RadioGroupOption>
+    </div>
+  </RadioGroup>
       <!-- <label for="description" class="sr-only">Description</label> -->
       <!-- <textarea :class="textareaClass" v-model="textareaContent" rows="5" name="description" id="description" class="border border-gray-300 rounded-lg p-4 block w-full resize-none text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" :placeholder="textareaPlaceholder" /> -->
     </form>
