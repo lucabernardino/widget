@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import ButtonWidget from '../ButtonWidget.vue';
 import CollectFeedback from './CollectFeedback.vue';
+import CollectPoll from './CollectPoll.vue';
 
 // Toggle function
 const toggleFeedback = () => {
@@ -35,8 +36,15 @@ const showFeedback = ref(show_or_not(props.survey));
   <div class="pointer-events-none fixed inset-x-0 bottom-0 px-6 pb-6">
       <div class="pointer-events-auto ml-auto max-w-xl">
             <ButtonWidget v-if="!showFeedback" @click="toggleFeedback" />
+            <CollectPoll 
+            v-if="showFeedback && survey.type == 'poll'"
+            :project_id="project_id" 
+            :app="app"
+            :customer="customer"
+            :survey="survey"
+            @close="toggleFeedback"  />
             <CollectFeedback 
-            v-if="showFeedback"
+            v-if="showFeedback && survey.type == 'qa'"
             :project_id="project_id" 
             :app="app"
             :customer="customer"
