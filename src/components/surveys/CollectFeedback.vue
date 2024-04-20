@@ -1,6 +1,6 @@
 <script>
 import axios from 'axios';
-import UserNotification from './UserNotification.vue';
+import UserNotification from '../UserNotification.vue';
 export default {
   props: {
     app: String,  // Define 'name' as a prop

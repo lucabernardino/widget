@@ -1,21 +1,27 @@
 <template>
   <div>
-    <NotificationWidget v-if="notificationData" :data="notificationData" />
+    <Survey
+      v-if="survey"
+      :survey="survey"
+      :customer="customer" 
+      :app="app_key" 
+      :project_id="project_id"
+    />
+    <!-- <NotificationWidget v-if="notificationData" :data="notificationData" />
     <FeedbackWidget 
+      v-if="survey"
       :customer="customer" 
       :app="app_key" 
       :project_id="project_id"
       :survey="survey"
-    />
+    /> -->
   </div>
 </template>
 
 <script setup>
 import { onMounted, ref, getCurrentInstance } from 'vue';
 import axios from 'axios';
-import NotificationWidget from './NotificationWidget.vue';
-import FeedbackWidget from './FeedbackWidget.vue';
-import { data } from 'autoprefixer';
+import Survey from './surveys/Survey.vue';
 
 const props = defineProps({
   instance : Object,
