@@ -24,10 +24,14 @@
 
     // Load the JavaScript file
     if (mainEntry.file) {
-      const script = document.createElement('script');
-      script.src = `${baseUrl}${mainEntry.file}`;
-      script.async = true;  // Ensure script is loaded asynchronously
-      document.body.appendChild(script);
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = `${baseUrl}${mainEntry.file}`;
+        script.async = false;  // Load this script synchronously
+        script.onload = resolve;
+        script.onerror = reject;
+        document.body.appendChild(script);
+      });
     }
   }
 
@@ -36,11 +40,11 @@
       .then(response => response.json())
       .then(manifest => {
         createMountPoint();
-        loadMainAssets(manifest);
+        return loadMainAssets(manifest);
       })
       .then(() => {
-        if (window.Dawnvox) {
-          // Pass the configuration to your Vue app
+        // Ensure initVueApp is available before calling it
+        if (window.initVueApp && window.Dawnvox) {
           initVueApp(window.Dawnvox);  // Assuming `initVueApp` is your app initialization function
         }
       })

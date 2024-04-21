@@ -18,7 +18,7 @@ import Survey from './surveys/Survey.vue';
 
 const props = defineProps({
   instance : Object,
-  customer : Object
+  customer : String
 })
 
 // Reactive reference to hold the notification data

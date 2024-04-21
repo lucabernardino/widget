@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import './index.css';
 import helpers from '@/helpers';
+import axios from 'axios';
 
 function initVueApp(project_id) {
   const app = createApp(App);
@@ -14,33 +15,36 @@ function initVueApp(project_id) {
   app.mount('#dawn_vox_app');
 
   // Expose the event method globally
-  window.DawnVox = {
-    // set_event(eventName) {
-    //   // API URL where events are logged
-    //   const apiUrl = 'https://yourapi.com/events';
+  window.Dawnvox = {
+    async set_event(event_name, user_id = null) {
+      // API URL where events are logged
+      const apiUrl = 'http://local.dawnvox.com:8000/api/events';
+      try {
+        const response = await axios.post(apiUrl, 
+          {
+            project_id: project_id,
+            name : event_name,
+            user_id : (user_id) ? user_id : helpers.unique_id()
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
 
-    //   // Make an API call to log the event
-    //   fetch(apiUrl, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Authorization': `Bearer ${apiKey}`
-    //     },
-    //     body: JSON.stringify({ eventName })
-    //   })
-    //   .then(response => {
-    //     if (!response.ok) {
-    //       throw new Error('Network response was not ok');
-    //     }
-    //     return response.json();
-    //   })
-    //   .then(data => {
-    //     console.log('Event logged:', data);
-    //   })
-    //   .catch(error => {
-    //     console.error('Error logging event:', error);
-    //   });
-    // }
+        if (response.status != 200) {
+          throw new Error('Network response was not ok.');
+        }
+        else {
+          console.log('successful')
+        }
+
+      } catch (error) {
+        console.error("Failed to connect to Dawnvox:", error);
+      }
+
+    }
   };
 }
 
