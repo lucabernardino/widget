@@ -52,13 +52,13 @@ export default {
         if (response.status != 200) {
           throw new Error('Network response was not ok.');
         }
-        {
+        else {
           this.success = true
           this.show_container = false
         }
 
       } catch (error) {
-
+        
       } finally {
         this.isLoading = false;
       }
@@ -73,7 +73,6 @@ export default {
     <p class="font-semibold text-sm text-indigo-500">Tell us how you feel</p>
     <h3 class="font-semibold text-lg">{{ survey.statement }}</h3>
     <form action="#" class="relative mt-4">
-      <label for="description" class="sr-only">Description</label>
       <textarea :class="textareaClass" v-model="textareaContent" rows="5" name="description" id="description" class="border border-gray-300 rounded-lg p-4 block w-full resize-none text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" :placeholder="textareaPlaceholder" />
     </form>
   </div>

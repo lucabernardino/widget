@@ -7,14 +7,7 @@
       :app="app_key" 
       :project_id="project_id"
     />
-    <!-- <NotificationWidget v-if="notificationData" :data="notificationData" />
-    <FeedbackWidget 
-      v-if="survey"
-      :customer="customer" 
-      :app="app_key" 
-      :project_id="project_id"
-      :survey="survey"
-    /> -->
+    <NotificationWidget v-if="notificationData" :data="notificationData" />
   </div>
 </template>
 

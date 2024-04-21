@@ -19,6 +19,7 @@ const props = defineProps({
 const show_or_not = (survey) => {
     if (survey.default) {
         const randomChance = Math.floor(Math.random() * 5); // Generates a number from 0 to 4
+        console.log(randomChance)
         if (randomChance === 0) { // Has a 1 in 5 chance to be true (20% probability)
             return true;
         }
@@ -37,19 +38,22 @@ const showFeedback = ref(show_or_not(props.survey));
       <div class="pointer-events-auto ml-auto max-w-xl">
             <ButtonWidget v-if="!showFeedback" @click="toggleFeedback" />
             <CollectPoll 
-            v-if="showFeedback && survey.type == 'poll'"
-            :project_id="project_id" 
-            :app="app"
-            :customer="customer"
-            :survey="survey"
-            @close="toggleFeedback"  />
+              v-if="showFeedback && survey.type == 'poll'"
+              :project_id="project_id" 
+              :app="app"
+              :customer="customer"
+              :survey="survey"
+              @close="toggleFeedback"  
+            />
+
             <CollectFeedback 
-            v-if="showFeedback && survey.type == 'qa'"
-            :project_id="project_id" 
-            :app="app"
-            :customer="customer"
-            :survey="survey"
-            @close="toggleFeedback"  />
+              v-if="showFeedback && survey.type == 'qa'"
+              :project_id="project_id" 
+              :app="app"
+              :customer="customer"
+              :survey="survey"
+              @close="toggleFeedback"  
+            />
       </div>
   </div>
 </template>
