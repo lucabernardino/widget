@@ -19,7 +19,6 @@ const props = defineProps({
 const show_or_not = (survey) => {
     if (survey.default) {
         const randomChance = Math.floor(Math.random() * 5); // Generates a number from 0 to 4
-        console.log(randomChance)
         if (randomChance === 0) { // Has a 1 in 5 chance to be true (20% probability)
             return true;
         }

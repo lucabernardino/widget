@@ -8,29 +8,27 @@
     document.body.appendChild(appDiv);
   }
 
-  function loadAssets(manifest) {
-    const assets = [];
-    Object.keys(manifest).forEach(key => {
-      const entry = manifest[key];
-      // if (entry.css) {
-      //   entry.css.forEach(css => {
-      //     const link = document.createElement('link');
-      //     link.href = `${baseUrl}${css}`;
-      //     link.rel = 'stylesheet';
-      //     document.head.appendChild(link);
-      //   });
-      // }
-      if (entry.file) {
-        const promise = new Promise((resolve) => {
-          const script = document.createElement('script');
-          script.src = `${baseUrl}${entry.file}`;
-          script.onload = resolve;
-          document.body.appendChild(script);
-        });
-        assets.push(promise);
-      }
-    });
-    return Promise.all(assets);
+  function loadMainAssets(manifest) {
+    const mainEntry = manifest["src/main.js"];
+    if (!mainEntry) return;
+
+    // Load CSS files if they exist
+    if (mainEntry.css) {
+      mainEntry.css.forEach(css => {
+        const link = document.createElement('link');
+        link.href = `${baseUrl}${css}`;
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
+      });
+    }
+
+    // Load the JavaScript file
+    if (mainEntry.file) {
+      const script = document.createElement('script');
+      script.src = `${baseUrl}${mainEntry.file}`;
+      script.async = true;  // Ensure script is loaded asynchronously
+      document.body.appendChild(script);
+    }
   }
 
   function init() {
@@ -38,7 +36,7 @@
       .then(response => response.json())
       .then(manifest => {
         createMountPoint();
-        return loadAssets(manifest);
+        loadMainAssets(manifest);
       })
       .then(() => {
         if (window.Dawnvox) {
