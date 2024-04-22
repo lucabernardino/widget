@@ -1,5 +1,12 @@
 <template>
   <div>
+    <TriggeredSurvey
+      v-if="$surveyTriggered.value"
+      :survey="$surveyTriggered"
+      :customer="customer" 
+      :app="app_key" 
+      :project_id="project_id"
+    />
     <Survey
       v-if="survey"
       :survey="survey"
@@ -15,6 +22,7 @@
 import { onMounted, ref, getCurrentInstance } from 'vue';
 import axios from 'axios';
 import Survey from './surveys/Survey.vue';
+import TriggeredSurvey from './surveys/TriggeredSurvey.vue';
 
 const props = defineProps({
   instance : Object,
