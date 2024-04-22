@@ -68,15 +68,13 @@ function initVueApp(project_id) {
           throw new Error('Network response was not ok.');
         }
         else {
-          console.log('triggered survey')
-          console.log(response.data)
           if (response.data) {
             app.config.globalProperties.$surveyTriggered.value = response.data;
           }
         }
 
       } catch (error) {
-        console.error("Failed to connect to Dawnvox:", error);
+        //console.error("Failed to connect to Dawnvox:", error);
       }
 
     }

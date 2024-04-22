@@ -5,7 +5,7 @@ export default {
   props: {
     app: String,  // Define 'name' as a prop
     project_id: String,  // Define 'name' as a prop
-    customer: String,  // Define 'name' as a prop
+    customer: Number,  // Define 'name' as a prop
     survey: Object,  // Define 'name' as a prop
   },
   components: {

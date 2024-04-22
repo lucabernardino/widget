@@ -14,7 +14,7 @@
       :app="app_key" 
       :project_id="project_id"
     />
-    <NotificationWidget v-if="notificationData" :data="notificationData" />
+    <NotificationWidget v-if="notificationData" :notifications="notificationData" />
   </div>
 </template>
 
@@ -23,10 +23,11 @@ import { onMounted, ref, getCurrentInstance } from 'vue';
 import axios from 'axios';
 import Survey from './surveys/Survey.vue';
 import TriggeredSurvey from './surveys/TriggeredSurvey.vue';
+import NotificationWidget from './NotificationWidget.vue';
 
 const props = defineProps({
   instance : Object,
-  customer : String
+  customer : Number
 })
 
 // Reactive reference to hold the notification data
@@ -55,7 +56,6 @@ const postData = async () => {
     if (response.data) {
       notificationData.value = response.data.notifications;
       app_key.value = response.data.app
-
 
       if (response.data.survey.length == 0) {
         survey.value = response.data.default_survey

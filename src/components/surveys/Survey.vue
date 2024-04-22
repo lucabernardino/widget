@@ -12,7 +12,7 @@ const toggleFeedback = () => {
 const props = defineProps({
   app : String,
   project_id : String,
-  customer: String,
+  customer: Number,
   survey: Object,
 })
 
