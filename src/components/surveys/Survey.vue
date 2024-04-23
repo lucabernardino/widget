@@ -33,9 +33,13 @@ const showFeedback = ref(show_or_not(props.survey));
 </script>
 
 <template>
+  <div class="pointer-events-none fixed inset-x-0 bottom-0 px-6 pb-6" v-if="!showFeedback && !$surveyTriggered.value">
+    <div class="pointer-events-auto ml-auto max-w-48 rounded-xl">
+      <ButtonWidget @click="toggleFeedback" />
+    </div>
+  </div>
   <div class="pointer-events-none fixed inset-x-0 bottom-0 px-6 pb-6">
       <div class="pointer-events-auto ml-auto max-w-xl">
-            <ButtonWidget v-if="!showFeedback && !$surveyTriggered.value" @click="toggleFeedback" />
             <CollectPoll 
               v-if="showFeedback && survey.type == 'poll'"
               :project_id="project_id" 
