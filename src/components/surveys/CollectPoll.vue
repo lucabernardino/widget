@@ -28,6 +28,7 @@ const submitForm = async (selectedSetting) => {
         {
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${props.app}`
           }
         }
       );
