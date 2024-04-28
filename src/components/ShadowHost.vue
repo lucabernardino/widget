@@ -1,12 +1,6 @@
 <template>
   <div>
-    <TriggeredSurvey
-      v-if="$surveyTriggered.value"
-      :survey="$surveyTriggered"
-      :customer="customer" 
-      :app="app_key" 
-      :project_id="project_id"
-    />
+    <NotificationWidget v-if="notificationData" :notifications="notificationData" />
     <Survey
       v-if="survey"
       :survey="survey"
@@ -14,7 +8,6 @@
       :app="app_key" 
       :project_id="project_id"
     />
-    <NotificationWidget v-if="notificationData" :notifications="notificationData" />
   </div>
 </template>
 
@@ -22,11 +15,10 @@
 import { onMounted, ref, getCurrentInstance } from 'vue';
 import axios from 'axios';
 import Survey from './surveys/Survey.vue';
-import TriggeredSurvey from './surveys/TriggeredSurvey.vue';
 import NotificationWidget from './NotificationWidget.vue';
+import { surveyStore } from '../store/store.vue';
 
 const props = defineProps({
-  instance : Object,
   customer : Number
 })
 
@@ -35,42 +27,6 @@ const notificationData = ref(null);
 const app_key = ref(null);
 const survey = ref(null);
 
-// Accessing the global properties safely using getCurrentInstance
-const instance = getCurrentInstance();
-const globalProperties = instance?.appContext.config.globalProperties;
-const project_id = globalProperties?.$config?.project_id;
-
-const postData = async () => {
-  try {
-    const response = await axios.post('http://local.dawnvox.com:8000/api/user', 
-      {
-        project_id: project_id,
-        customer : props.customer
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    if (response.data) {
-      notificationData.value = response.data.notifications;
-      app_key.value = response.data.app
-
-      if (response.data.survey.length == 0) {
-        survey.value = response.data.default_survey
-      }
-      else {
-        survey.value = response.data.survey
-      }
-    }
-  } catch (error) {
-    console.error("Failed to connect to Dawnvox:", error);
-  }
-};
-
-onMounted(() => {
-  postData();
-});
+const store = surveyStore()
 
 </script>
