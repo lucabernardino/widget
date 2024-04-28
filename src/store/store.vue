@@ -29,7 +29,9 @@ export const surveyStore = defineStore('survey', {
         set_customer(customer) {
             this.customer = customer
         },
-
+        toggle_feedback() {
+            this.show_survey = !this.show_survey
+        },
         set_survey_to_customer() {
             if (this.survey.default) {
                 const randomChance = Math.floor(Math.random() * 5); // Generates a number from 0 to 4

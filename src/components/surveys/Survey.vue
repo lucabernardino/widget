@@ -14,13 +14,6 @@ const props = defineProps({
   survey: Object,
 })
 
-// Toggle function
-const toggleFeedback = () => {
-  return true
-};
-
-store.set_survey_to_customer()
-
 </script>
 
 <template>
@@ -42,7 +35,7 @@ store.set_survey_to_customer()
               :survey="store.get_survey" 
             />
 
-            <ButtonWidget />
+            <ButtonWidget @click="store.toggle_feedback()" />
       </div>
   </div>
 </template>
