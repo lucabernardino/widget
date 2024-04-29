@@ -3,8 +3,8 @@ import { ref, computed } from 'vue';
 import ButtonWidget from '../ButtonWidget.vue';
 import CollectFeedback from './CollectFeedback.vue';
 import CollectPoll from './CollectPoll.vue';
-import TriggeredSurvey from './TriggeredSurvey.vue';
 import { surveyStore } from '@/store/store.vue';
+import UserNotification from '../UserNotification.vue';
 const store = surveyStore()
 
 const props = defineProps({
@@ -14,13 +14,15 @@ const props = defineProps({
   survey: Object,
 })
 
+store.show_or_not()
 </script>
 
 <template>
+  <UserNotification v-if="store.show_notification" title="Feedback received" description="We really appreciate it" />
   <div class="pointer-events-none fixed inset-x-0 bottom-0 px-6 pb-6">
-      <div class="pointer-events-auto ml-auto max-w-xl">        
+      <div class="pointer-events-auto ml-auto max-w-xl">
              <CollectPoll 
-              v-if="store.show_survey && store.get_survey.type == 'poll'"
+              v-if="store.get_survey.type == 'poll' && store.show_survey"
               :project_id="store.get_project_id" 
               :app="store.get_api_key"
               :customer="store.get_customer"
@@ -28,14 +30,14 @@ const props = defineProps({
             />
 
             <CollectFeedback 
-              v-if="store.show_survey && store.get_survey.type == 'qa'"
+              v-if="store.get_survey.type == 'qa' && store.show_survey"
               :project_id="store.get_project_id" 
               :app="store.get_api_key"
               :customer="store.get_customer"
               :survey="store.get_survey" 
             />
 
-            <ButtonWidget @click="store.toggle_feedback()" />
+            <ButtonWidget @click="store.toggle_show_survey()"  />
       </div>
   </div>
 </template>

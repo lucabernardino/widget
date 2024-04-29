@@ -1,6 +1,8 @@
 <script setup>
 import axios from 'axios';
 import UserNotification from '../UserNotification.vue';
+import { surveyStore } from '../../store/store.vue';
+const store = surveyStore()
 import { ref } from 'vue'
 import { RadioGroup, RadioGroupDescription, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue'
 
@@ -67,6 +69,9 @@ const description = ref('We really appreciate it')
 <UserNotification v-if="success" :title="title" :description="description" />
 <div v-if="show_container" class="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
   <div class="px-4 py-5 sm:p-6">
+    <svg @click="store.toggle_show_survey()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 float-right cursor-pointer">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+    </svg>
     <p class="font-semibold text-sm text-indigo-500">Tell us how you feel</p>
     <h3 class="font-semibold text-lg">{{ survey.statement }}</h3>
     <form action="#" class="relative mt-4">

@@ -8,7 +8,8 @@ export const surveyStore = defineStore('survey', {
         api_key: '',
         customer: '',
         project_id: '',
-        show_survey : true
+        show_survey : false,
+        show_notification : false
     }),
     getters: {
         get_survey: (state) => state.survey,
@@ -29,22 +30,51 @@ export const surveyStore = defineStore('survey', {
         set_customer(customer) {
             this.customer = customer
         },
-        toggle_feedback() {
+        toggle_show_survey() {
             this.show_survey = !this.show_survey
         },
-        set_survey_to_customer() {
+        show_or_not() {
             if (this.survey.default) {
-                const randomChance = Math.floor(Math.random() * 5); // Generates a number from 0 to 4
-                if (randomChance === 0) { // Has a 1 in 5 chance to be true (20% probability)
-                    return this.show_survey = true;
+                const randomChance = Math.floor(Math.random() * 2); // Generates a number from 0 to 4
+                if (randomChance === 0) { 
+                    this.show_survey = true // Has a 1 in 5 chance to be true (20% probability)
+                    return true;
                 }
-
-                return this.show_survey = false;
+                this.show_survey = false
+                return false;
             }
 
-            return this.show_survey = true
+            this.show_survey = true
+            return true;
         },
+        async set_event(event_name) {
+            const apiUrl = 'http://local.dawnvox.com:8000/api/events';
+            try {
+                const response = await axios.post(apiUrl, 
+                {
+                    project_id: this.project_id,
+                    name : event_name,
+                    user_id : this.customer
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.api_key}`
+                    }
+                }
+                );
 
+                if (response.status != 200) {
+                    throw new Error('Network response was not ok.');
+                }
+                else {
+                    console.log('successful')
+                }
+            } catch (error) {
+                console.error("Failed to connect to Dawnvox:", error);
+            }
+
+        },
         async trigger_survey(survey_id) {
             const apiUrl = 'http://local.dawnvox.com:8000/api/survey/trigger';
             try {

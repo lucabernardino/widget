@@ -1,92 +1,87 @@
-<script>
+<script setup>
+import { ref } from 'vue';
 import axios from 'axios';
 import UserNotification from '../UserNotification.vue';
 import { surveyStore } from '../../store/store.vue';
 const store = surveyStore()
 
-export default {
-  props: {
+const props = defineProps({
     app: String,  // Define 'name' as a prop
     project_id: String,  // Define 'name' as a prop
     customer: Number,  // Define 'name' as a prop
     survey: Object,  // Define 'name' as a prop
-  },
-  components: {
-    UserNotification // Register the component
-  },
-  data() {
-    return {
-      textareaContent: '',
-      isLoading: false,
-      success: false,
-      show_container: true,
-      title: 'Feedback received',
-      description: 'We really appreciate it',
-      textareaClass: 'border-gray-300',
-      textareaPlaceholder: 'Share your thoughts'
-    };
-  },
-  methods: {
-    submitForm() {
-      if (!this.textareaContent) {
-        this.textareaClass = 'border-red-500'; // Change border color to red
-        this.textareaPlaceholder = 'Please enter some feedback'; 
-        return;
-      }
-      this.isLoading = true; // Start loading
-      this.makeApiRequest();
+})
+
+const show_container = ref(true)
+const isLoading = ref(false)
+const success = ref(false)
+const textareaContent = ref('')
+const textareaClass = ref('border-gray-300')
+const textareaPlaceholder = ref('Share your thoughts')
+
+const submit_form = () => {
+  if (!textareaContent.value) {
+    textareaClass.value = 'border-red-500'; // Change border color to red
+    textareaPlaceholder.value = 'Please enter some feedback'; 
+    return;
+  }
+
+  isLoading.value = true; // Start loading
+
+  make_request();
+
+}
+
+const make_request = async () => {
+  try {
+    const response = await axios.post('http://local.dawnvox.com:8000/api/feedback',
+    {
+      project_id: store.project_id,
+      survey_id : props.survey.id,
+      customer_id : store.customer,
+      content : textareaContent.value
     },
-    async makeApiRequest() {
-      try {
-        const response = await axios.post('http://local.dawnvox.com:8000/api/feedback',
-          {
-            project_id: this.project_id,
-            survey_id : this.survey.id,
-            customer_id : this.customer,
-            content : this.textareaContent
-          },
-          {
-            headers : {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${this.app}`
-            }
-          }
-        );
-
-        if (response.status != 200) {
-          throw new Error('Network response was not ok.');
-        }
-        else {
-          this.success = true
-          this.show_container = false
-        }
-
-      } catch (error) {
-        
-      } finally {
-        this.isLoading = false;
+    {
+      headers : {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${store.api_key}`
       }
     }
+    );
+
+    if (response.status != 200) {
+      throw new Error('Network response was not ok.');
+    }
+    else {
+      store.show_notification = true
+      show_container.value = false
+    }
+
+  } 
+  catch (error) {
+    console.log(error)
+  } finally {
+    isLoading.value = false;
   }
 }
+
+
 </script>
 <template>
-<UserNotification v-if="this.success" :title="this.title" :description="this.description" />
-<div v-if="this.show_container" class="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
+<div class="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow" v-if="show_container">
   <div class="px-4 py-5 sm:p-6">
-    <svg @click="store.set_survey_to_customer()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 float-right cursor-pointer">
+    <svg @click="store.toggle_show_survey()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 float-right cursor-pointer">
       <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
     </svg>
     <p class="font-semibold text-sm text-indigo-500">Tell us how you feel</p>
     <h3 class="font-semibold text-lg">{{ survey.statement }}</h3>
-
     <form action="#" class="relative mt-4">
       <textarea :class="textareaClass" v-model="textareaContent" rows="5" name="description" id="description" class="border border-gray-300 rounded-lg p-4 block w-full resize-none text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" :placeholder="textareaPlaceholder" />
     </form>
   </div>
   <div class="flex justify-end px-4 py-4 sm:px-6">
-    <button @click="submitForm" v-if="!isLoading" type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Submit</button>
-    <button @click="submitForm" v-if="isLoading" :disabled="isLoading" type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+    <button @click="submit_form" v-if="!isLoading" type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Submit</button>
+    <button @click="submit_form" v-if="isLoading" :disabled="isLoading" type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
         <span class="flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="animate-spin w-5 h-5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
