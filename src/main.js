@@ -6,7 +6,7 @@ import helpers from '@/helpers';
 import axios from 'axios';
 import { surveyStore } from '@/store/store.vue';
 
-function initVueApp(project_id) {
+function initVueApp(project_id, user_id) {
   const pinia = createPinia();
   const app = createApp(App);
 
@@ -15,13 +15,19 @@ function initVueApp(project_id) {
   app.use(pinia)
 
   const store = surveyStore()
+  const unique_user_id = user_id || helpers.unique_id()
   store.set_project_id(project_id)
+  store.set_user_id(unique_user_id)
 
   app.mount('#dawn_vox_app');
 
   window.Dawnvox = {
     async set_event(event_name) {
       store.set_event(event_name)
+    },
+    set_user_id(user_id) {
+      store.set_user_id(user_id);
+      return true
     },
     async trigger_survey(survey_id) {
       await store.trigger_survey(survey_id);
@@ -31,7 +37,7 @@ function initVueApp(project_id) {
 
 // Check if the config object exists and initialize the app
 if (window.Dawnvox && window.Dawnvox.project_id) {
-  initVueApp(window.Dawnvox.project_id);
+  initVueApp(window.Dawnvox.project_id, window.Dawnvox.user_id);
 } else {
   console.error('Dawnvox project key missing');
 }

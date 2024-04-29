@@ -21,11 +21,11 @@ const submitForm = async (selectedSetting) => {
 
       const response = await axios.post('http://local.dawnvox.com:8000/api/feedback',
         {
-          project_id: props.project_id,
-          survey_id: props.survey.id,
-          customer_id: props.customer,
+          project_id: store.project_id,
+          survey_id : store.survey.id,
+          user_id : store.user_id,
           content: selectedSetting,
-          type: props.survey.type  // Add the selected option to the payload
+          type: store.survey.type  // Add the selected option to the payload
         },
         {
           headers: {
@@ -66,7 +66,6 @@ const description = ref('We really appreciate it')
 
 </script>
 <template>
-<UserNotification v-if="success" :title="title" :description="description" />
 <div v-if="show_container" class="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
   <div class="px-4 py-5 sm:p-6">
     <svg @click="store.toggle_show_survey()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 float-right cursor-pointer">

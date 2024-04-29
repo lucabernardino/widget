@@ -18,14 +18,12 @@ import helpers from '@/helpers';
 import axios from 'axios';
 const store = surveyStore()
 
-store.set_customer(helpers.unique_id())
-
 const postData = async () => {
   try {
     const response = await axios.post('http://local.dawnvox.com:8000/api/user', 
       {
         project_id: store.get_project_id,
-        customer : store.get_customer
+        user_id : store.user_id
       },
       {
         headers: {

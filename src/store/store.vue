@@ -5,9 +5,9 @@ import axios from 'axios';
 export const surveyStore = defineStore('survey', {
     state: () => ({
         survey: false,
-        api_key: '',
-        customer: '',
-        project_id: '',
+        api_key: null,
+        user_id: null,
+        project_id: null,
         show_survey : false,
         show_notification : false
     }),
@@ -15,7 +15,7 @@ export const surveyStore = defineStore('survey', {
         get_survey: (state) => state.survey,
         get_project_id: (state) => state.project_id,
         get_api_key: (state) => state.api_key,
-        get_customer: (state) => state.customer
+        get_user: (state) => state.user_id
     },
     actions: {
         set_api_key(api_key) {
@@ -27,15 +27,15 @@ export const surveyStore = defineStore('survey', {
         set_survey(survey) {
             this.survey = survey
         },
-        set_customer(customer) {
-            this.customer = customer
+        set_user_id(user_id) {
+            this.user_id = user_id
         },
         toggle_show_survey() {
             this.show_survey = !this.show_survey
         },
         show_or_not() {
             if (this.survey.default) {
-                const randomChance = Math.floor(Math.random() * 2); // Generates a number from 0 to 4
+                const randomChance = Math.floor(Math.random() * 5); // Generates a number from 0 to 4
                 if (randomChance === 0) { 
                     this.show_survey = true // Has a 1 in 5 chance to be true (20% probability)
                     return true;
@@ -54,7 +54,7 @@ export const surveyStore = defineStore('survey', {
                 {
                     project_id: this.project_id,
                     name : event_name,
-                    user_id : this.customer
+                    user_id : this.user_id
                 },
                 {
                     headers: {

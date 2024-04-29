@@ -37,8 +37,8 @@ const make_request = async () => {
     const response = await axios.post('http://local.dawnvox.com:8000/api/feedback',
     {
       project_id: store.project_id,
-      survey_id : props.survey.id,
-      customer_id : store.customer,
+      survey_id : store.survey.id,
+      user_id : store.user_id,
       content : textareaContent.value
     },
     {
