@@ -14,15 +14,15 @@
 
               </div>
               <div class="ml-3 w-0 flex-1 pt-0.5">
-                <p class="text-sm font-medium text-gray-900">{{notification.title}}</p>
-                <p class="mt-1 text-sm text-gray-500">{{ notification.message }}</p>
-                <div class="mt-3 flex space-x-7">
-                  <button type="button" class="rounded-md bg-white text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Undo</button>
-                  <button type="button" class="rounded-md bg-white text-sm font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Dismiss</button>
+                <p v-if="notification.title" class="text-sm font-medium text-gray-900">{{notification.title}}</p>
+                <p class="text-sm text-gray-500">{{ notification.message }}</p>
+                <div class="mt-3">
+                  <button type="button" class="mr-3 rounded bg-indigo-50 px-2 py-1 text-xs font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100">Respond</button>
+                  <button type="button" class="rounded bg-white px-2 py-1 text-xs font-semibold text-gray-700  ring-inset ring-gray-300 hover:bg-gray-50" @click="removeNotification(index)">Mark as read</button>
                 </div>
               </div>
               <div class="ml-4 flex flex-shrink-0">
-                <button type="button" @click="removeNotification(index)" class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                <button @click="removeNotification(index)" type="button" class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                   <span class="sr-only">Close</span>
                   <XMarkIcon class="h-5 w-5" aria-hidden="true" />
                 </button>
