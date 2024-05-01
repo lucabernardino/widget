@@ -1,5 +1,6 @@
 <template>
   <div id="dawn_vox_app">
+    <NotificationWidget :notifications="notifications" />
     <Survey
       v-if="store.get_survey"
       :survey="store.get_survey"
@@ -11,12 +12,14 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { surveyStore } from '@/store/store.vue';
-import Survey from '@/components/surveys/Survey.vue';
-import helpers from '@/helpers';
 import axios from 'axios';
+import Survey from '@/components/surveys/Survey.vue';
+import NotificationWidget from './components/NotificationWidget.vue';
 const store = surveyStore()
+
+const notifications = ref([])
 
 const postData = async () => {
   try {
@@ -32,7 +35,7 @@ const postData = async () => {
       }
     );
     if (response.data) {
-      // notificationData.value = response.data.notifications;
+      notifications.value = response.data.notifications;
       store.set_api_key(response.data.app)
 
       if (response.data.survey.length == 0) {

@@ -68,7 +68,8 @@ export const surveyStore = defineStore('survey', {
                     throw new Error('Network response was not ok.');
                 }
                 else {
-                    console.log('successful')
+                    this.survey = response.data
+                    this.show_survey = true
                 }
             } catch (error) {
                 console.error("Failed to connect to Dawnvox:", error);
