@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import UserNotification from '../UserNotification.vue';
 import { surveyStore } from '../../store/store.vue';
 const store = surveyStore()
 
@@ -14,7 +13,6 @@ const props = defineProps({
 
 const show_container = ref(true)
 const isLoading = ref(false)
-const success = ref(false)
 const textareaContent = ref('')
 const textareaClass = ref('border-gray-300')
 const textareaPlaceholder = ref('Share your thoughts')
@@ -55,7 +53,7 @@ const make_request = async () => {
     }
     else {
       store.show_notification = true
-      show_container.value = false
+      store.toggle_show_survey()
     }
 
   } 

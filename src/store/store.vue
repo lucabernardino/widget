@@ -13,6 +13,7 @@ export const surveyStore = defineStore('survey', {
     }),
     getters: {
         get_survey: (state) => state.survey,
+        get_show_survey: (state) => state.show_survey,
         get_project_id: (state) => state.project_id,
         get_api_key: (state) => state.api_key,
         get_user: (state) => state.user_id

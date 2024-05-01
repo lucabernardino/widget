@@ -49,7 +49,7 @@ const submitForm = async (selectedSetting) => {
       else {
         success.value = true
         loading.value = !loading.value
-        show_container.value = !show_container.value
+        store.toggle_show_survey()
       }
       
       // Optionally, handle success (e.g., setting a success message state)

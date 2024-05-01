@@ -22,7 +22,7 @@ store.show_or_not()
   <div class="pointer-events-none fixed inset-x-0 bottom-0 px-6 pb-6">
       <div class="pointer-events-auto ml-auto max-w-xl">
              <CollectPoll 
-              v-if="store.get_survey.type == 'poll' && store.show_survey"
+              v-if="store.get_survey.type == 'poll' && store.get_show_survey"
               :project_id="store.get_project_id" 
               :app="store.get_api_key"
               :customer="store.get_customer"
@@ -30,7 +30,7 @@ store.show_or_not()
             />
 
             <CollectFeedback 
-              v-if="store.get_survey.type == 'qa' && store.show_survey"
+              v-if="store.get_survey.type == 'qa' && store.get_show_survey"
               :project_id="store.get_project_id" 
               :app="store.get_api_key"
               :customer="store.get_customer"
