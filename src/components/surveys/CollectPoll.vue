@@ -32,6 +32,7 @@ const submitForm = async (selectedSetting) => {
           project_id: store.project_id,
           survey_id : store.survey.id,
           user_id : store.user_id,
+          dawnvox_user_id : store.dawnvox_user_id,
           content : selectedSetting,
           type: store.survey.type  // Add the selected option to the payload
         },

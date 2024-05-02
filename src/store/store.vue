@@ -7,6 +7,7 @@ export const surveyStore = defineStore('survey', {
         survey: false,
         api_key: null,
         user_id: null,
+        dawnvox_user_id: null,
         project_id: null,
         show_survey : false,
         show_notification : false
@@ -16,7 +17,8 @@ export const surveyStore = defineStore('survey', {
         get_show_survey: (state) => state.show_survey,
         get_project_id: (state) => state.project_id,
         get_api_key: (state) => state.api_key,
-        get_user: (state) => state.user_id
+        get_user: (state) => state.user_id,
+        get_dawnvox_user: (state) => state.dawnvox_user_id
     },
     actions: {
         set_api_key(api_key) {
@@ -30,6 +32,40 @@ export const surveyStore = defineStore('survey', {
         },
         set_user_id(user_id) {
             this.user_id = user_id
+        },
+        async update_user(user_id, data) {
+            try {
+                this.user_id = user_id
+                const apiUrl = 'http://local.dawnvox.com:8000/api/user-update';
+                const response = await axios.post(apiUrl, 
+                {
+                    project_id: this.project_id,
+                    name: data.name,
+                    email: data.email, 
+                    user_id : this.user_id,
+                    dawnvox_user_id: this.dawnvox_user_id
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.api_key}`
+                    },
+                }
+                );
+
+                if (response.status != 200) {
+                    throw new Error('Network response was not ok.');
+                }
+                else {
+                    return true
+                }
+            } catch (error) {
+                console.log(error)
+            }
+            
+        },
+        set_dawnvox_user_id(dawnvox_user_id) {
+            this.dawnvox_user_id = dawnvox_user_id
         },
         toggle_show_survey() {
             this.show_survey = !this.show_survey
@@ -55,7 +91,8 @@ export const surveyStore = defineStore('survey', {
                 {
                     project_id: this.project_id,
                     name : event_name,
-                    user_id : this.user_id
+                    user_id : this.user_id,
+                    dawnvox_user_id: this.dawnvox_user_id
                 },
                 {
                     headers: {

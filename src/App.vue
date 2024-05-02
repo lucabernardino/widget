@@ -26,7 +26,8 @@ const postData = async () => {
     const response = await axios.post('http://local.dawnvox.com:8000/api/user', 
       {
         project_id: store.get_project_id,
-        user_id : store.user_id
+        user_id : store.user_id,
+        dawnvox_user_id : store.dawnvox_user_id
       },
       {
         headers: {

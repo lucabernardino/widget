@@ -37,6 +37,7 @@ const make_request = async () => {
       project_id: store.project_id,
       survey_id : store.survey.id,
       user_id : store.user_id,
+      dawnvox_user_id : store.dawnvox_user_id,
       content : textareaContent.value,
       type: store.survey.type
     },

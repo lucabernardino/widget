@@ -1,9 +1,8 @@
-import { createApp, ref } from 'vue';
+import { createApp } from 'vue';
 import { createPinia } from 'pinia'
 import App from './App.vue';
 import './index.css';
 import helpers from '@/helpers';
-import axios from 'axios';
 import { surveyStore } from '@/store/store.vue';
 
 function initVueApp(project_id, user_id) {
@@ -15,9 +14,11 @@ function initVueApp(project_id, user_id) {
   app.use(pinia)
 
   const store = surveyStore()
-  const unique_user_id = user_id || helpers.unique_id()
+  const dawnvox_user_id = helpers.unique_id()
+  const unique_user_id = user_id
   store.set_project_id(project_id)
   store.set_user_id(unique_user_id)
+  store.set_dawnvox_user_id(dawnvox_user_id)
 
   app.mount('#dawn_vox_app');
 
@@ -27,6 +28,13 @@ function initVueApp(project_id, user_id) {
     },
     set_user_id(user_id) {
       store.set_user_id(user_id);
+      return true
+    },
+    update_user(user_id, data) {
+
+      if ((typeof data === 'undefined') || typeof data.name === 'undefined' && typeof data.email === 'undefined') return false;
+
+      store.update_user(user_id, data);
       return true
     },
     async trigger_survey(survey_id) {
