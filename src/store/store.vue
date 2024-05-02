@@ -17,7 +17,7 @@ export const surveyStore = defineStore('survey', {
         get_show_survey: (state) => state.show_survey,
         get_project_id: (state) => state.project_id,
         get_api_key: (state) => state.api_key,
-        get_user: (state) => state.user_id,
+        get_user_id: (state) => state.user_id,
         get_dawnvox_user: (state) => state.dawnvox_user_id
     },
     actions: {

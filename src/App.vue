@@ -21,7 +21,7 @@ const store = surveyStore()
 
 const notifications = ref([])
 
-const postData = async () => {
+const fetch_user = async () => {
   try {
     const response = await axios.post('http://local.dawnvox.com:8000/api/user', 
       {
@@ -52,6 +52,6 @@ const postData = async () => {
 };
 
 onMounted(() => {
-  postData();
+  fetch_user();
 });
 </script>

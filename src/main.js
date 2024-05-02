@@ -28,14 +28,16 @@ function initVueApp(project_id, user_id) {
     },
     set_user_id(user_id) {
       store.set_user_id(user_id);
-      return true
+      return store.get_user_id
+    },
+    get_user_id() {
+      return store.get_user_id;
     },
     update_user(user_id, data) {
-
       if ((typeof data === 'undefined') || typeof data.name === 'undefined' && typeof data.email === 'undefined') return false;
 
       store.update_user(user_id, data);
-      return true
+      return data
     },
     async trigger_survey(survey_id) {
       await store.trigger_survey(survey_id);
