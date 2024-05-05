@@ -5,6 +5,7 @@ import axios from 'axios';
 export const surveyStore = defineStore('survey', {
     state: () => ({
         survey: false,
+        default_survey: false,
         api_key: null,
         user_id: null,
         dawnvox_user_id: null,
@@ -29,6 +30,13 @@ export const surveyStore = defineStore('survey', {
         },
         set_survey(survey) {
             this.survey = survey
+        },
+        set_default_survey(survey) {
+            this.default_survey = survey
+        },
+        toggle_show_survey() {
+            this.show_survey = !this.show_survey
+            this.survey = this.default_survey
         },
         set_user_id(user_id) {
             this.user_id = user_id
@@ -66,9 +74,6 @@ export const surveyStore = defineStore('survey', {
         },
         set_dawnvox_user_id(dawnvox_user_id) {
             this.dawnvox_user_id = dawnvox_user_id
-        },
-        toggle_show_survey() {
-            this.show_survey = !this.show_survey
         },
         show_or_not() {
             if (this.survey.default) {

@@ -41,6 +41,7 @@ const fetch_user = async () => {
 
       if (response.data.survey.length == 0) {
         store.set_survey(response.data.default_survey)
+        store.set_default_survey(response.data.default_survey)
       }
       else {
         store.set_survey(response.data.survey)

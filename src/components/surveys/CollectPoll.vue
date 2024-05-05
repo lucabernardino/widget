@@ -48,8 +48,7 @@ const submitForm = async (selectedSetting) => {
         throw new Error('Network response was not ok.');
       }
       else {
-        success.value = true
-        loading.value = !loading.value
+        store.show_notification = true
         store.toggle_show_survey()
       }
       
