@@ -19,7 +19,7 @@ store.show_or_not()
 
 <template>
   <UserNotification v-if="store.show_notification" title="Feedback received" description="We really appreciate it" />
-  <div class="pointer-events-none fixed inset-x-0 bottom-0 px-6 pb-6">
+  <div class="pointer-events-none fixed inset-x-0 bottom-14 px-6 pb-6">
       <div class="pointer-events-auto ml-auto max-w-xl">
              <CollectPoll 
               v-if="store.get_survey.type == 'poll' && store.get_show_survey"
@@ -36,8 +36,11 @@ store.show_or_not()
               :customer="store.get_customer"
               :survey="store.get_survey" 
             />
-
-            <ButtonWidget @click="store.toggle_show_survey()"  />
+      </div>
+      <div class="pointer-events-none fixed inset-x-0 bottom-0 px-6 pb-6">
+        <div class="pointer-events-auto ml-auto max-w-40">
+        <ButtonWidget @click="store.toggle_show_survey()"  />
+      </div>
       </div>
   </div>
 </template>

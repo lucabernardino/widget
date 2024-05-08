@@ -15,10 +15,18 @@
   <script>
     (function() {
       window.Dawnvox = {
-        project_id: "b3224c0727893c25bfbb380cf85a09991f4c6a9d",
-        user_id: 3
+        project_id: "7e7520a3d35756e6d10d4fed9680cbb91ae0af1c"
       };
+
+      var baseUrl = 'https://dawnvox.com/';
+      var scriptsToLoad = ['dawnvox.js'];
+
+      scriptsToLoad.forEach(function(src) {
+        var script = document.createElement('script');
+        script.src = baseUrl + src;
+        script.async = false;
+        document.body.appendChild(script);
+      });
     })();
-  </script> 
-  <!-- <script type="module" src="https://dawnvox.com/dawnvox.js"></script> -->
+  </script>
 </html>
