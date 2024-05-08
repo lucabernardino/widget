@@ -47,7 +47,9 @@ function initVueApp(project_id, user_id) {
 
 // Check if the config object exists and initialize the app
 if (window.Dawnvox && window.Dawnvox.project_id) {
-  initVueApp(window.Dawnvox.project_id, window.Dawnvox.user_id);
+  initVueApp(
+    window.Dawnvox.project_id, 
+    window.Dawnvox.user_id);
 } else {
   console.error('Dawnvox project key missing');
 }
