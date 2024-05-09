@@ -38,6 +38,7 @@ const fetch_user = async () => {
     if (response.data) {
       notifications.value = response.data.notifications;
       store.set_api_key(response.data.app)
+      store.set_keep_brand(response.data.keep_brand)
 
       if (response.data.survey.length == 0) {
         store.set_survey(response.data.default_survey)

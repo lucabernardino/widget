@@ -79,10 +79,18 @@ const make_request = async () => {
       <textarea :class="textareaClass" v-model="textareaContent" rows="5" name="description" id="description" class="border border-gray-300 rounded-lg p-4 block w-full resize-none text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" :placeholder="textareaPlaceholder" />
     </form>
   </div>
-  <div class="flex justify-end px-4 py-4 sm:px-6">
+
+  <div class="flex justify-between px-4 py-4 sm:px-6">
+  <div class="flex items-center">
+    <a class="flex items-center" href="https://dawnvox.com" target="_blank" v-if="store.get_keep_brand">
+      <p class="text-xs text-gray-600"><strong>powered by</strong></p>
+      <img src="http://local.dawnvox.com:8000/dawnvox-black.png" alt="Dawnvox" class="ml-2 w-20">
+    </a>
+  </div>
+  <div class="flex justify-end items-center space-x-2">
     <button @click="submit_form" v-if="!isLoading" type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Submit</button>
     <button @click="submit_form" v-if="isLoading" :disabled="isLoading" type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-        <span class="flex items-center gap-2">
+      <span class="flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="animate-spin w-5 h-5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
         </svg>
@@ -90,5 +98,8 @@ const make_request = async () => {
       </span>
     </button>
   </div>
+</div>
+
+
 </div>
 </template>

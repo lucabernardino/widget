@@ -11,7 +11,8 @@ export const surveyStore = defineStore('survey', {
         dawnvox_user_id: null,
         project_id: null,
         show_survey : false,
-        show_notification : false
+        show_notification : false,
+        keep_brand : false
     }),
     getters: {
         get_survey: (state) => state.survey,
@@ -19,7 +20,8 @@ export const surveyStore = defineStore('survey', {
         get_project_id: (state) => state.project_id,
         get_api_key: (state) => state.api_key,
         get_user_id: (state) => state.user_id,
-        get_dawnvox_user: (state) => state.dawnvox_user_id
+        get_dawnvox_user: (state) => state.dawnvox_user_id,
+        get_keep_brand: (state) => state.keep_brand
     },
     actions: {
         set_api_key(api_key) {
@@ -30,6 +32,9 @@ export const surveyStore = defineStore('survey', {
         },
         set_survey(survey) {
             this.survey = survey
+        },
+        set_keep_brand(keep_brand) {
+            this.keep_brand = keep_brand
         },
         set_default_survey(survey) {
             this.default_survey = survey

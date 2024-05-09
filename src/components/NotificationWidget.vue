@@ -17,12 +17,11 @@
                 <p v-if="notification.title" class="text-sm font-medium text-gray-900">{{notification.title}}</p>
                 <p class="text-sm text-gray-500">{{ notification.message }}</p>
                 <div class="mt-3">
-                  <button type="button" class="mr-3 rounded bg-indigo-50 px-2 py-1 text-xs font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100">Respond</button>
-                  <button type="button" class="rounded bg-white px-2 py-1 text-xs font-semibold text-gray-700  ring-inset ring-gray-300 hover:bg-gray-50" @click="removeNotification(index)">Mark as read</button>
+                  <button type="button" class="mr-3 rounded bg-indigo-50 px-2 py-1 text-xs font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100" @click="removeNotification(index)">Mark as read</button>
                 </div>
               </div>
               <div class="ml-4 flex flex-shrink-0">
-                <button @click="show = false" type="button" class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                <button @click="removeNotification(index)" type="button" class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                   <span class="sr-only">Close</span>
                   <XMarkIcon class="h-5 w-5" aria-hidden="true" />
                 </button>
@@ -41,6 +40,8 @@
 import { ref, watch } from 'vue'
 import { InboxIcon, XMarkIcon } from '@heroicons/vue/20/solid'
 import axios from 'axios'
+import { surveyStore } from '../store/store.vue';
+const store = surveyStore()
 
 const props = defineProps({
   notifications: Array
@@ -58,7 +59,18 @@ const removeNotification = async (index) => {
   const id = notifications.value[index].id;
   try {
     notifications.value.splice(index, 1);  // Remove the notification from the list
-    await axios.put(`http://local.dawnvox.com:8000/api/notifications/${id}`);
+    await axios.put(`http://local.dawnvox.com:8000/api/notifications/${id}`, 
+    {
+        project_id: store.get_project_id,
+        user_id : store.user_id,
+        dawnvox_user_id : store.dawnvox_user_id
+    },
+    {
+      headers : {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${store.api_key}`
+      }
+    });
   } catch (error) {
     console.error('Error sending notification:', error);
   }
